@@ -1,6 +1,6 @@
 FROM alpine:3.6
 
-ENV VERSION=v8.2.1 NPM_VERSION=5.3 YARN_VERSION=latest
+ENV VERSION=v8.4.0 NPM_VERSION=5.3 YARN_VERSION=latest
 
 RUN apk add --no-cache icu-libs && \
   apk add --no-cache curl make gcc g++ python linux-headers binutils-gold gnupg libstdc++ icu-dev && \
