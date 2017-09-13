@@ -1,14 +1,14 @@
 FROM alpine:3.6
 
-ENV VERSION=v8.4.0 NPM_VERSION=5.3 YARN_VERSION=latest
+ENV NODE_VERSION=v8.5.0 NPM_VERSION=5.4.1 YARN_VERSION=latest
 
 RUN apk add --no-cache icu-libs && \
   apk add --no-cache curl make gcc g++ python linux-headers binutils-gold gnupg libstdc++ icu-dev && \
-  curl -sSLO https://nodejs.org/dist/${VERSION}/node-${VERSION}.tar.xz && \
-  curl -sSL https://nodejs.org/dist/${VERSION}/SHASUMS256.txt.asc | gpg --batch --decrypt | \
-    grep " node-${VERSION}.tar.xz\$" | sha256sum -c | grep . && \
-  tar -xf node-${VERSION}.tar.xz && \
-  cd node-${VERSION} && \
+  curl -sSLO https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_VERSION}.tar.xz && \
+  curl -sSL https://nodejs.org/dist/${NODE_VERSION}/SHASUMS256.txt.asc | gpg --batch --decrypt | \
+    grep " node-${NODE_VERSION}.tar.xz\$" | sha256sum -c | grep . && \
+  tar -xf node-${NODE_VERSION}.tar.xz && \
+  cd node-${NODE_VERSION} && \
   ./configure --with-intl=system-icu --prefix=/usr ${CONFIG_FLAGS} && \
   make -j$(getconf _NPROCESSORS_ONLN) && \
   make install && \
@@ -25,6 +25,6 @@ RUN apk add --no-cache icu-libs && \
   ln -s /usr/local/share/yarn/bin/yarnpkg /usr/local/bin/ && \
   rm ${YARN_VERSION}.tar.gz* && \
   apk del curl make gcc g++ python linux-headers binutils-gold gnupg && \
-  rm -rf /node-${VERSION}* /usr/share/man /tmp/* /var/cache/apk/* \
+  rm -rf /node-${NODE_VERSION}* /usr/share/man /tmp/* /var/cache/apk/* \
     /root/.npm /root/.node-gyp /root/.gnupg /usr/lib/node_modules/npm/man \
     /usr/lib/node_modules/npm/doc /usr/lib/node_modules/npm/html /usr/lib/node_modules/npm/scripts
