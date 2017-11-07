@@ -19,7 +19,6 @@ RUN addgroup -g 1000 node \
         linux-headers \
         make \
         python \
-        build-essential \
         icu-dev \
   # gpg keys listed at https://github.com/nodejs/node#release-team
   && for key in \
