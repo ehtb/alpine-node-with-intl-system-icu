@@ -1,13 +1,10 @@
 FROM alpine:3.6
 
-ENV NPM_CONFIG_LOGLEVEL info
 ENV NODE_VERSION 9.0.0
-ENV YARN_VERSION 1.3.2
 
 RUN addgroup -g 1000 node \
     && adduser -u 1000 -G node -s /bin/sh -D node \
     && apk add --no-cache \
-        icu-libs \
         libstdc++ \
     && apk add --no-cache --virtual .build-deps \
         binutils-gold \
@@ -19,7 +16,6 @@ RUN addgroup -g 1000 node \
         linux-headers \
         make \
         python \
-        icu-dev \
   # gpg keys listed at https://github.com/nodejs/node#release-team
   && for key in \
     94AE36675C464D64BAFA68DD7434390BDBE9B9C5 \
@@ -41,13 +37,15 @@ RUN addgroup -g 1000 node \
     && grep " node-v$NODE_VERSION.tar.xz\$" SHASUMS256.txt | sha256sum -c - \
     && tar -xf "node-v$NODE_VERSION.tar.xz" \
     && cd "node-v$NODE_VERSION" \
-    && ./configure --with-intl=system-icu \
+    && ./configure --with-intl=full-icu --download=all \
     && make -j$(getconf _NPROCESSORS_ONLN) \
     && make install \
     && apk del .build-deps \
     && cd .. \
     && rm -Rf "node-v$NODE_VERSION" \
     && rm "node-v$NODE_VERSION.tar.xz" SHASUMS256.txt.asc SHASUMS256.txt
+
+ENV YARN_VERSION 1.2.1
 
 RUN apk add --no-cache --virtual .build-deps-yarn curl gnupg tar \
   && for key in \
