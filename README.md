@@ -1,1 +1,1 @@
-Based on https://github.com/mhart/alpine-node/blob/master/Dockerfile
+Based on https://github.com/nodejs/docker-node/blob/master/9/alpine/Dockerfile
